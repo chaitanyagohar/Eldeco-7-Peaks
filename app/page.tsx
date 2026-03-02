@@ -85,13 +85,6 @@ function Navbar({ openModal }: { openModal: () => void }) {
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes ring { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-15deg); } 75% { transform: rotate(15deg); } }
-        .animate-ring { animation: ring 1.5s ease-in-out infinite; }
-        @keyframes float-download { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-        .animate-float-dl { animation: float-download 2s ease-in-out infinite; }
-      `}} />
-
       <nav className="fixed top-0 w-full bg-white shadow-md z-50 flex items-center justify-between h-[70px] border-b border-gray-200">
         <div className="flex items-center h-full w-full lg:w-auto justify-between lg:justify-start px-4 lg:px-0">
           <div className="lg:px-6 lg:mr-2 flex items-center cursor-pointer h-full lg:border-r border-gray-200 min-w-[200px]">
@@ -246,7 +239,8 @@ export default function EldecoLandingPage() {
           <input type="tel" placeholder="Phone number" className="w-[70%] px-3 py-3 focus:outline-none bg-transparent text-sm" required/>
         </div>
         <div className="pt-4 text-center">
-          <button type="submit" className="animated-gradient text-white px-10 py-3 rounded font-bold shadow-lg w-full md:w-3/4 transition-transform hover:scale-105">
+          {/* Animated Form CTA */}
+          <button type="submit" className="animated-gradient text-white px-10 py-3 rounded font-bold shadow-[0_0_15px_rgba(27,91,80,0.4)] w-full md:w-3/4 transition-transform hover:scale-105 animate-cta-pop">
             Get It Now
           </button>
         </div>
@@ -257,13 +251,29 @@ export default function EldecoLandingPage() {
   return (
     <div className="bg-gray-50 min-h-screen font-sans text-gray-800 relative scroll-smooth pb-16 lg:pb-0">
       
+      {/* GLOBAL CSS STYLES WITH NEW CTA ANIMATION */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .animated-gradient { background: linear-gradient(270deg, #1b5b50, #979e27, #1b5b50); background-size: 200% 200%; animation: gradientMove 3s ease infinite; color: white; border: none; }
         .animated-gradient-hover:hover { background: linear-gradient(270deg, #124038, #7a8020, #124038); background-size: 200% 200%; animation: gradientMove 2s ease infinite; }
+        
+        /* Attention Catching CTA Animation */
+        @keyframes ctaPop {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.03); }
+        }
+        .animate-cta-pop {
+          animation: ctaPop 2s ease-in-out infinite;
+        }
+
+        /* Utility classes */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .writing-vertical { writing-mode: vertical-rl; text-orientation: mixed; }
+        @keyframes ring { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-15deg); } 75% { transform: rotate(15deg); } }
+        .animate-ring { animation: ring 1.5s ease-in-out infinite; }
+        @keyframes float-download { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        .animate-float-dl { animation: float-download 2s ease-in-out infinite; }
       `}} />
 
       <Navbar openModal={openModal} />
@@ -301,6 +311,7 @@ export default function EldecoLandingPage() {
       <div className="flex flex-col lg:flex-row mt-[70px] mx-auto bg-gray-50 border-x border-gray-200 shadow-sm max-w-[1500px]">
         <div className="w-full lg:w-[72%] lg:border-r border-gray-200 overflow-hidden">
           
+          {/* Hero Section */}
           <section id="home" className="relative flex flex-col lg:flex-row lg:items-center lg:h-[550px] lg:p-8 bg-white lg:bg-transparent overflow-hidden">
             <div className="relative w-full h-[320px] shrink-0 lg:absolute lg:inset-0 lg:h-full lg:w-full z-0">
               {heroImages.map((img, idx) => (
@@ -342,7 +353,8 @@ export default function EldecoLandingPage() {
                 <p className="text-[11px] lg:text-xs text-gray-700 mb-1">Luxurious <span className="font-bold">3, 4 BHK & Penthouse</span> Starts From</p>
                 <p className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">₹ 2.16 Cr <span className="text-xs lg:text-sm font-normal text-gray-500">Onwards</span></p>
 
-                <button onClick={openModal} className="w-full animated-gradient animated-gradient-hover font-bold py-2.5 lg:py-3 rounded transition shadow-lg flex items-center justify-center text-sm lg:text-base">
+                {/* Animated Hero CTA */}
+                <button onClick={openModal} className="w-full animated-gradient animated-gradient-hover font-bold py-2.5 lg:py-3 rounded transition shadow-[0_0_15px_rgba(27,91,80,0.5)] flex items-center justify-center text-sm lg:text-base animate-cta-pop">
                   Download Brochure
                 </button>
               </div>
@@ -353,17 +365,26 @@ export default function EldecoLandingPage() {
             <ContactForm />
           </section>
 
-          <section className="p-6 lg:p-8 bg-white border-b border-gray-100">
-            <h2 className="text-2xl lg:text-3xl font-bold text-teal-800 mb-4">Welcome To Eldeco 7 Peaks Residences</h2>
-            <p className="text-gray-600 leading-relaxed text-sm mb-4">
-              Eldeco 7 Peaks Residences is an elegant residential enclave in Sector Omicron 1A, Greater Noida. This 7-tower-strong masterpiece offers luxurious 3 BHK and 4 BHK residences with beautiful panoramic views of the surrounding greenery from curved balconies. With all 4 sides of this project being open, every apartment enjoys abundant natural light and excellent ventilation.
-            </p>
-            <button className="text-sm font-bold underline text-gray-800 mb-6 block hover:text-teal-700">Read more</button>
-            <button onClick={openModal} className="w-full lg:w-auto animated-gradient text-white px-6 py-3 rounded font-bold flex justify-center items-center shadow-md">
+          {/* UPDATED WELCOME SECTION */}
+          <section className="p-6 lg:p-10 bg-white border-b border-gray-100">
+            <h2 className="text-2xl lg:text-3xl font-bold text-teal-800 mb-6">Welcome To Eldeco 7 Peaks Residences</h2>
+            
+            <div className="text-gray-600 leading-relaxed text-sm space-y-4 mb-8 text-justify">
+              <p>
+                Eldeco 7 Peaks Residences is an elegant residential enclave in Sector Omicron 1A, Greater Noida. This 7-tower-strong masterpiece offers luxurious 3 BHK and 4 BHK residences with beautiful panoramic views of the surrounding greenery from curved balconies. With all 4 sides of this project being open, every apartment enjoys abundant natural light and excellent ventilation. On top of that, each apartment is dressed with imported stone flooring and premium fittings. This project also presents a lavish 1,00,000 sq. ft. clubhouse along with top-tier amenities, including a clubhouse, landscaped garden, swimming pool, gymnasium, kids’ play area, multipurpose court, indoor games area, yoga zone, senior citizen area, and CCTV security.
+              </p>
+              <p>
+                Situated in the bustling suburb of Greater Noida, Eldeco 7 Peaks Residences is merely minutes away from prominent landmarks like Millennium International School, Lotus World School, Harvard Learning School, KCC Institute of Technology & Management, Galgotias College of Engineering & Technology, Ivory Hospital, Kailash Hospital, Green City Hospital, Fortis Hospital, Wegmans Business Park, Stellar Business Park, Globus IT Park, The Grand Venice Mall, Omaxe Connaught Place Mall, MSX Mall, and Omicron Park. It is seamlessly connected to the city and beyond via Pari Chowk, the Yamuna Expressway, Noida-Greater Noida Expressway, Delta 1 Metro Station, and (upcoming) Noida International Airport. So, Eldeco 7 Peaks Residences, a gateway to a beautiful and serene life in Greater Noida, awaits as your next residential destination.
+              </p>
+            </div>
+
+            {/* Animated Welcome CTA */}
+            <button onClick={openModal} className="w-full md:w-auto animated-gradient text-white px-8 py-3.5 rounded-md font-bold flex justify-center items-center shadow-[0_0_15px_rgba(27,91,80,0.4)] hover:shadow-[0_0_20px_rgba(27,91,80,0.6)] transition-all duration-300 animate-cta-pop mx-auto lg:mx-0">
                <Download size={18} className="mr-2"/> Download Brochure
             </button>
           </section>
 
+          {/* Pricing Section */}
           <section id="price" className="p-6 lg:p-8 bg-white border-b border-gray-100">
             <h2 className="text-xl lg:text-2xl font-bold text-teal-800 mb-6">Eldeco 7 Peaks Residences Pricing And Saleable Area</h2>
             <div className="flex flex-col md:flex-row gap-6">
@@ -405,6 +426,7 @@ export default function EldecoLandingPage() {
             </div>
           </section>
 
+          {/* Master Plan */}
           <section id="floorplan" className="p-6 lg:p-8 bg-white border-b border-gray-100">
             <h2 className="text-xl lg:text-2xl font-bold text-teal-800 mb-6">Eldeco 7 Peaks Residences Master Plan</h2>
             <div className="flex justify-center group cursor-pointer" onClick={openModal}>
@@ -453,7 +475,7 @@ export default function EldecoLandingPage() {
                     <div 
                       key={i} 
                       className="relative h-48 lg:h-56 min-w-[260px] lg:min-w-[320px] rounded-lg overflow-hidden group/item cursor-pointer snap-start" 
-                      onClick={() => openLightbox(amenitiesList.map(a => a.img), i)} // UPDATED HERE
+                      onClick={() => openLightbox(amenitiesList.map(a => a.img), i)} 
                     >
                       <img src={amenity.img} alt={amenity.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/item:scale-110"/>
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover/item:opacity-100 transition-opacity"></div>
@@ -481,7 +503,7 @@ export default function EldecoLandingPage() {
                 <div
                   key={index}
                   className="group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-lg transition duration-300"
-                  onClick={() => openLightbox(galleryImages, index)} // UPDATED HERE
+                  onClick={() => openLightbox(galleryImages, index)} 
                 >
                   <img src={src} alt={`Gallery ${index + 1}`} className="w-full h-28 lg:h-40 object-cover transform group-hover:scale-110 transition duration-700 ease-out" />
                 </div>
