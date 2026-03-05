@@ -597,7 +597,7 @@ export default function EldecoLandingPage() {
                   <span className="text-yellow-400 flex mr-2 text-lg">
                     ★★★★★
                   </span>
-                  <span className="font-bold mr-1">4.7</span>{" "}
+                  <span className="font-bold mr-1">4.9</span>{" "}
                   <span className="text-gray-500 text-xs lg:text-sm">
                     Stars 50 Reviews
                   </span>
@@ -993,7 +993,7 @@ export default function EldecoLandingPage() {
                       <MapPin size={16} className="text-teal-700 mr-2" /> Noida
                       Int Airport (upcoming)
                     </span>{" "}
-                    <span className="font-bold">50 mins</span>
+                    <span className="font-bold">45 mins</span>
                   </li>
                 </ul>
               </div>

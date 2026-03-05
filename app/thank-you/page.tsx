@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Phone } from "lucide-react";
 
 export default function ThankYouPage() {
   return (
@@ -15,19 +15,30 @@ export default function ThankYouPage() {
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 tracking-tight">
           Thank You!
         </h1>
+
         <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-10">
           Your request has been successfully submitted. One of our expert property consultants will get in touch with you shortly to assist you with your real estate journey.
         </p>
         
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
-          <Link href="/" className="w-full sm:w-auto">
-            <button className="w-full px-8 py-3.5 rounded bg-teal-700 text-white font-bold hover:bg-teal-800 transition-all shadow-md">
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 w-full justify-center items-center">
+
+          {/* Highlighted Call Button */}
+          <a href="tel:+919205303155">
+            <button className="flex items-center justify-center px-6 py-3 rounded-lg bg-orange-500 text-white font-bold shadow-lg hover:bg-orange-600 transition-all animate-pulse">
+              <Phone size={18} className="mr-2" />
+              Call Now
+            </button>
+          </a>
+
+          {/* Smaller Back Button */}
+          <Link href="/">
+            <button className="px-5 py-2.5 rounded bg-teal-700 text-white text-sm font-semibold hover:bg-teal-800 transition shadow">
               Back to Home
             </button>
           </Link>
-        </div>
 
+        </div>
       </div>
     </div>
   );
