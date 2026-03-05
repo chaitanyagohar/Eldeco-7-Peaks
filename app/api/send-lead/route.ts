@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "leads.albero@gmail.com",
+      user: "solidate03@gmail.com",
       pass: process.env.EMAIL_PASS,
     },
   });
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   try {
     await transporter.sendMail({
       from: '"Website Lead" <leads.albero@gmail.com>',
-      to: "leads.albero@gmail.com",
+      to: "goharchaitanya04@gmail.com",
       subject: "New Lead - Eldeco 7 Peaks",
       html: `
         <h2>New Website Lead</h2>

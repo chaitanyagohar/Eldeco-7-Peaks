@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation"; // <-- IMPORTED ROUTER
 import {
   Home,
   IndianRupee,
@@ -22,6 +23,7 @@ import {
   Menu,
 } from "lucide-react";
 import Image from "next/image";
+
 // ==========================================
 // IMAGE LIGHTBOX COMPONENT
 // ==========================================
@@ -249,8 +251,12 @@ function Navbar({ openModal }: { openModal: () => void }) {
 // MAIN LANDING PAGE COMPONENT
 // ==========================================
 export default function EldecoLandingPage() {
+  const router = useRouter(); // <-- INSTANTIATE ROUTER HERE
+
   // Modal States
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasAutoPopped, setHasAutoPopped] = useState(false); // Track if popup fired
 
   // Lightbox States
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -281,6 +287,20 @@ export default function EldecoLandingPage() {
     "/gall3.webp",
     "/gall4.webp",
   ];
+
+  // ==========================================
+  // 5-SECOND AUTO POPUP LOGIC
+  // ==========================================
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!hasAutoPopped) {
+        setIsModalOpen(true);
+        setHasAutoPopped(true);
+      }
+    }, 5000); // 5000 milliseconds = 5 seconds
+
+    return () => clearTimeout(timer);
+  }, [hasAutoPopped]);
 
   // Auto-advance Hero Slider
   useEffect(() => {
@@ -343,27 +363,63 @@ export default function EldecoLandingPage() {
     }
   };
 
+  // ==========================================
+  // NODEMAILER SUBMISSION HANDLER
+  // ==========================================
+  const handleLeadSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Extract form data
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      property: "Eldeco 7 Peaks Residences", // Context for your email
+    };
+
+    try {
+      const response = await fetch("/api/send-lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setIsModalOpen(false);
+        // ROUTER REDIRECT TO THANK YOU PAGE
+        router.push("/thank-you"); 
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Network error. Please check your connection and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const ContactForm = () => (
-    <div className="bg-white">
+    <div className="bg-white rounded-lg p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-gray-100">
       <h3 className="text-lg font-bold text-center text-gray-800 mb-6">
         Get The Best Quote
       </h3>
-      <form
-        className="space-y-5"
-        onSubmit={(e) => {
-          e.preventDefault();
-          openModal();
-        }}
-      >
+      <form className="space-y-5" onSubmit={handleLeadSubmit}>
         <input
           type="text"
+          name="name" 
           placeholder="Name"
           className="w-full px-2 py-3 border-b border-gray-300 focus:outline-none focus:border-teal-700 bg-transparent text-sm transition-colors"
           required
         />
         <input
           type="email"
-          placeholder="Email Address(Optional)"
+          name="email"
+          placeholder="Email Address (Optional)"
           className="w-full px-2 py-3 border-b border-gray-300 focus:outline-none focus:border-teal-700 bg-transparent text-sm transition-colors"
         />
         <div className="flex border-b border-gray-300 items-center">
@@ -372,18 +428,19 @@ export default function EldecoLandingPage() {
           </select>
           <input
             type="tel"
+            name="phone"
             placeholder="Phone number"
             className="w-[70%] px-3 py-3 focus:outline-none bg-transparent text-sm"
             required
           />
         </div>
         <div className="pt-4 text-center">
-          {/* Animated Form CTA */}
           <button
             type="submit"
-            className="animated-gradient text-white px-10 py-3 rounded font-bold shadow-[0_0_15px_rgba(27,91,80,0.4)] w-full md:w-3/4 transition-transform hover:scale-105 animate-cta-pop"
+            disabled={isSubmitting}
+            className="animated-gradient text-white px-10 py-3 rounded font-bold shadow-[0_0_15px_rgba(27,91,80,0.4)] w-full transition-transform hover:scale-105 animate-cta-pop disabled:opacity-50 disabled:hover:scale-100"
           >
-            Get It Now
+            {isSubmitting ? "Sending..." : "Get It Now"}
           </button>
         </div>
       </form>
@@ -468,6 +525,20 @@ export default function EldecoLandingPage() {
           <FileText size={16} className="mr-2 text-red-300" /> Brochure
         </button>
       </div>
+
+      {/* ========================================== */}
+      {/* WHATSAPP FLOATING BUTTON */}
+      {/* ========================================== */}
+      <a
+        href="https://wa.me/919205303155?text=Hi, I am interested in Eldeco 7 Peaks Residences."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-[75px] lg:bottom-6 right-4 lg:right-6 z-50 bg-[#25D366] text-white p-3 lg:p-4 rounded-full shadow-[0_4px_15px_rgba(37,211,102,0.4)] hover:scale-110 transition-transform flex items-center justify-center"
+      >
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.031 0C5.397 0 0 5.398 0 12.033C0 14.153 0.553 16.19 1.547 17.986L0.24 22.753L5.116 21.468C6.845 22.373 8.875 22.894 11.026 22.894C17.66 22.894 23.056 17.496 23.056 10.862C23.056 4.228 17.659 0 12.031 0ZM12.031 21.002C10.158 21.002 8.423 20.499 6.945 19.624L6.619 19.431L3.639 20.214L4.441 17.291L4.228 16.953C3.254 15.421 2.71 13.593 2.71 11.661C2.71 6.516 6.885 2.341 12.031 2.341C17.177 2.341 21.352 6.516 21.352 11.661C21.352 16.806 17.177 21.002 12.031 21.002ZM17.151 15.021C16.87 14.881 15.488 14.199 15.231 14.106C14.973 14.012 14.786 13.965 14.599 14.246C14.412 14.527 13.874 15.183 13.71 15.37C13.546 15.557 13.382 15.58 13.101 15.44C12.82 15.3 11.776 14.954 10.536 13.844C9.57 12.981 8.913 11.921 8.749 11.64C8.585 11.359 8.732 11.207 8.873 11.067C8.999 10.941 9.154 10.74 9.294 10.581C9.435 10.422 9.482 10.305 9.575 10.118C9.669 9.93 9.622 9.767 9.552 9.626C9.482 9.486 8.92 8.127 8.686 7.565C8.457 7.016 8.223 7.091 8.045 7.08C7.881 7.07 7.694 7.07 7.507 7.07C7.32 7.07 7.016 7.14 6.758 7.421C6.501 7.702 5.776 8.381 5.776 9.762C5.776 11.143 6.782 12.477 6.922 12.665C7.063 12.852 8.905 15.702 11.832 16.967C12.529 17.268 13.076 17.446 13.504 17.581C14.204 17.804 14.843 17.771 15.344 17.681C15.904 17.581 17.151 16.844 17.408 16.094C17.666 15.344 17.666 14.712 17.595 14.571C17.525 14.431 17.338 14.337 17.057 14.197H17.151Z" />
+        </svg>
+      </a>
 
       <div className="flex flex-col lg:flex-row mt-[70px] mx-auto bg-gray-50 border-x border-gray-200 shadow-sm max-w-[1500px]">
         <div className="w-full lg:w-[72%] lg:border-r border-gray-200 overflow-hidden">
@@ -1017,30 +1088,39 @@ export default function EldecoLandingPage() {
           </footer>
         </div>
 
+        {/* ========================================== */}
+        {/* RIGHT COLUMN (WHERE THE FORM NOW LIVES!) */}
+        {/* ========================================== */}
         <div className="hidden lg:block lg:w-[28%] bg-gray-50 relative">
           <div className="sticky top-16 p-6 pt-8 bg-white h-[calc(100vh-64px)] overflow-y-auto border-l border-gray-200">
-           <a href="tel:+919205303155">
-  <button className="w-full bg-[#f97316] hover:bg-orange-600 text-white font-bold py-3.5 rounded mb-8 flex items-center justify-center shadow-md transition-colors">
-    <Phone size={18} className="mr-2" />
-    Instant Call Back
-  </button>
-</a>
+            
+            <ContactForm />
 
-            <div
-              className="mt-20 border rounded-full p-2 flex items-center justify-center shadow-sm cursor-pointer hover:bg-gray-50 transition group"
-              onClick={openModal}
-            >
-              <div className="flex items-center px-4">
-                <span className="text-sm font-bold text-gray-700 text-right leading-tight mr-3 group-hover:text-teal-700 transition">
-                  Download
-                  <br />
-                  Brochure
-                </span>
-                <div className="bg-red-600 text-white p-3 rounded-full shadow">
-                  <FileText size={18} />
+            <div className="mt-8 border-t border-gray-100 pt-8">
+              <a href="tel:+919205303155">
+                <button className="w-full bg-[#f97316] hover:bg-orange-600 text-white font-bold py-3.5 rounded mb-8 flex items-center justify-center shadow-md transition-colors">
+                  <Phone size={18} className="mr-2" />
+                  Instant Call Back
+                </button>
+              </a>
+
+              <div
+                className="border rounded-full p-2 flex items-center justify-center shadow-sm cursor-pointer hover:bg-gray-50 transition group"
+                onClick={openModal}
+              >
+                <div className="flex items-center px-4">
+                  <span className="text-sm font-bold text-gray-700 text-right leading-tight mr-3 group-hover:text-teal-700 transition">
+                    Download
+                    <br />
+                    Brochure
+                  </span>
+                  <div className="bg-red-600 text-white p-3 rounded-full shadow">
+                    <FileText size={18} />
+                  </div>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -1130,21 +1210,21 @@ export default function EldecoLandingPage() {
                   Register Here And Avail The{" "}
                   <span className="text-red-500">Best Offers!!</span>
                 </h3>
+                {/* Notice we attached the same handleLeadSubmit here! */}
                 <form
                   className="space-y-4 lg:space-y-6"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setIsModalOpen(false);
-                  }}
+                  onSubmit={handleLeadSubmit}
                 >
                   <input
                     type="text"
+                    name="name" 
                     placeholder="Name"
                     className="w-full px-1 py-2 border-b border-gray-300 text-gray-700 focus:outline-none focus:border-teal-700 text-sm"
                     required
                   />
                   <input
                     type="email"
+                    name="email"
                     placeholder="Email Address(Optional)"
                     className="w-full px-1 py-2 border-b border-gray-300 text-gray-700 focus:outline-none focus:border-teal-700 text-sm"
                   />
@@ -1154,6 +1234,7 @@ export default function EldecoLandingPage() {
                     </select>
                     <input
                       type="tel"
+                      name="phone"
                       placeholder="Phone number"
                       className="w-[65%] px-3 py-2 focus:outline-none text-gray-700 text-sm"
                       required
@@ -1162,9 +1243,10 @@ export default function EldecoLandingPage() {
                   <div className="pt-2 lg:pt-4 flex justify-center">
                     <button
                       type="submit"
-                      className="bg-teal-700 hover:bg-teal-800 text-white font-bold py-3 px-8 rounded-md shadow-md w-full md:w-3/4 text-sm transition-transform active:scale-95"
+                      disabled={isSubmitting}
+                      className="bg-teal-700 hover:bg-teal-800 text-white font-bold py-3 px-8 rounded-md shadow-md w-full md:w-3/4 text-sm transition-transform active:scale-95 disabled:opacity-50"
                     >
-                      Get Instant Call Back
+                      {isSubmitting ? "Sending..." : "Get Instant Call Back"}
                     </button>
                   </div>
                 </form>
