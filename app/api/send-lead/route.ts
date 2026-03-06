@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   try {
     await transporter.sendMail({
       from: '"Website Lead" <leads.albero@gmail.com>',
-      to: "eldeco7peaknoida.com",
+      to: "leads.albero@gmail.com",
       subject: "New Lead - Eldeco 7 Peaks",
       html: `
         <h2>New Website Lead</h2>
