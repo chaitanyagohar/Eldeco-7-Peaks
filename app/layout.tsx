@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script"; // <-- Added this import
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,9 +13,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Tip: You might want to update this metadata to match your real estate project!
 export const metadata: Metadata = {
-  title: "Eldeco 7 Peaks Residences", 
+  title: "Eldeco 7 Peaks Residences",
   description: "Luxurious 3 & 4 BHK Apartments in Sector Omicron 1A, Greater Noida",
 };
 
@@ -27,7 +26,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* */}
+        {/* ========================================= */}
+        {/* Google Tag Manager (HEAD)                 */}
+        {/* ========================================= */}
         <Script
           id="google-tag-manager"
           strategy="afterInteractive"
@@ -41,12 +42,33 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* */}
+
+        {/* ========================================= */}
+        {/* Google tag (gtag.js) for Google Ads       */}
+        {/* ========================================= */}
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=AW-18001039542`}
+        />
+        <Script
+          id="google-gtag"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-18001039542');
+            `,
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* */}
+        {/* ========================================= */}
+        {/* Google Tag Manager (noscript) (BODY)      */}
+        {/* ========================================= */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-W6RDWJRL"
@@ -55,10 +77,8 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-        {/* */}
 
         {children}
-        
       </body>
     </html>
   );
