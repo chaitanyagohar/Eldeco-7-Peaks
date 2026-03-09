@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation"; // <-- IMPORTED ROUTER
+import { useRouter } from "next/navigation"; 
 import {
   Home,
   IndianRupee,
@@ -251,12 +251,12 @@ function Navbar({ openModal }: { openModal: () => void }) {
 // MAIN LANDING PAGE COMPONENT
 // ==========================================
 export default function EldecoLandingPage() {
-  const router = useRouter(); // <-- INSTANTIATE ROUTER HERE
+  const router = useRouter(); 
 
   // Modal States
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [hasAutoPopped, setHasAutoPopped] = useState(false); // Track if popup fired
+  const [hasAutoPopped, setHasAutoPopped] = useState(false); 
 
   // Lightbox States
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -297,7 +297,7 @@ export default function EldecoLandingPage() {
         setIsModalOpen(true);
         setHasAutoPopped(true);
       }
-    }, 5000); // 5000 milliseconds = 5 seconds
+    }, 5000); 
 
     return () => clearTimeout(timer);
   }, [hasAutoPopped]);
@@ -364,19 +364,18 @@ export default function EldecoLandingPage() {
   };
 
   // ==========================================
-  // NODEMAILER SUBMISSION HANDLER
+  // NODEMAILER & GOOGLE ADS SUBMISSION HANDLER
   // ==========================================
   const handleLeadSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Extract form data
     const formData = new FormData(e.currentTarget);
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
       phone: formData.get("phone"),
-      property: "Eldeco 7 Peaks Residences", // Context for your email
+      property: "Eldeco 7 Peaks Residences", 
     };
 
     try {
@@ -389,8 +388,17 @@ export default function EldecoLandingPage() {
       });
 
       if (response.ok) {
+        
+        // FIRE GOOGLE ADS CONVERSION EVENT
+        if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+          (window as any).gtag('event', 'conversion', {
+              'send_to': 'AW-18001039542/EBh5COC9jYUcELahyIdD',
+              'value': 1.0,
+              'currency': 'INR'
+          });
+        }
+
         setIsModalOpen(false);
-        // ROUTER REDIRECT TO THANK YOU PAGE
         router.push("/thank-you"); 
       } else {
         alert("Something went wrong. Please try again.");
@@ -449,7 +457,6 @@ export default function EldecoLandingPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen font-sans text-gray-800 relative scroll-smooth pb-16 lg:pb-0">
-      {/* GLOBAL CSS STYLES WITH NEW CTA ANIMATION */}
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -457,7 +464,6 @@ export default function EldecoLandingPage() {
         .animated-gradient { background: linear-gradient(270deg, #1b5b50, #979e27, #1b5b50); background-size: 200% 200%; animation: gradientMove 3s ease infinite; color: white; border: none; }
         .animated-gradient-hover:hover { background: linear-gradient(270deg, #124038, #7a8020, #124038); background-size: 200% 200%; animation: gradientMove 2s ease infinite; }
         
-        /* Attention Catching CTA Animation */
         @keyframes ctaPop {
           0%, 100% { transform: scale(1); }
           50% { transform: scale(1.03); }
@@ -466,7 +472,6 @@ export default function EldecoLandingPage() {
           animation: ctaPop 2s ease-in-out infinite;
         }
 
-        /* Utility classes */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .writing-vertical { writing-mode: vertical-rl; text-orientation: mixed; }
@@ -480,7 +485,6 @@ export default function EldecoLandingPage() {
 
       <Navbar openModal={openModal} />
 
-      {/* --- LIGHTBOX RENDER --- */}
       {isLightboxOpen && (
         <ImageLightbox
           images={lightboxImages}
@@ -491,7 +495,6 @@ export default function EldecoLandingPage() {
         />
       )}
 
-      {/* Left Sticky Tab (Mobile) */}
       <div
         className="lg:hidden fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-white border border-l-0 border-gray-300 rounded-r shadow-lg cursor-pointer flex flex-col items-center py-4 px-1"
         onClick={openModal}
@@ -504,7 +507,6 @@ export default function EldecoLandingPage() {
         </span>
       </div>
 
-      {/* Bottom Sticky Action Bar (Mobile) */}
       <div className="lg:hidden fixed bottom-0 w-full bg-[#126b5e] text-white z-50 flex border-t border-teal-900 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
         <a
           href="tel:+919205303155"
@@ -526,9 +528,6 @@ export default function EldecoLandingPage() {
         </button>
       </div>
 
-      {/* ========================================== */}
-      {/* WHATSAPP FLOATING BUTTON */}
-      {/* ========================================== */}
       <a
         href="https://wa.me/919205303155?text=Hi, I am interested in Eldeco 7 Peaks Residences."
         target="_blank"
@@ -542,7 +541,6 @@ export default function EldecoLandingPage() {
 
       <div className="flex flex-col lg:flex-row mt-[70px] mx-auto bg-gray-50 border-x border-gray-200 shadow-sm max-w-[1500px]">
         <div className="w-full lg:w-[72%] lg:border-r border-gray-200 overflow-hidden">
-          {/* Hero Section */}
           <section
             id="home"
             className="relative flex flex-col lg:flex-row lg:items-center lg:h-[550px] lg:p-8 bg-white lg:bg-transparent overflow-hidden"
@@ -646,7 +644,6 @@ export default function EldecoLandingPage() {
                   </span>
                 </p>
 
-                {/* Animated Hero CTA */}
                 <button
                   onClick={openModal}
                   className="w-full animated-gradient animated-gradient-hover font-bold py-2.5 lg:py-3 rounded transition shadow-[0_0_15px_rgba(27,91,80,0.5)] flex items-center justify-center text-sm lg:text-base animate-cta-pop"
@@ -657,9 +654,10 @@ export default function EldecoLandingPage() {
             </div>
           </section>
 
-          <section className="lg:hidden p-6 bg-gray-100 border-y border-gray-200"></section>
+          <section className="lg:hidden p-6 bg-gray-100 border-y border-gray-200">
+            <ContactForm />
+          </section>
 
-          {/* UPDATED WELCOME SECTION */}
           <section className="p-6 lg:p-10 bg-white border-b border-gray-100">
             <h2 className="text-2xl lg:text-3xl font-bold text-teal-800 mb-6">
               Welcome To Eldeco 7 Peaks Residences
@@ -698,7 +696,6 @@ export default function EldecoLandingPage() {
               </p>
             </div>
 
-            {/* Animated Welcome CTA */}
             <button
               onClick={openModal}
               className="w-full md:w-auto animated-gradient text-white px-8 py-3.5 rounded-md font-bold flex justify-center items-center shadow-[0_0_15px_rgba(27,91,80,0.4)] hover:shadow-[0_0_20px_rgba(27,91,80,0.6)] transition-all duration-300 animate-cta-pop mx-auto lg:mx-0"
@@ -707,7 +704,6 @@ export default function EldecoLandingPage() {
             </button>
           </section>
 
-          {/* Pricing Section */}
           <section
             id="price"
             className="p-6 lg:p-8 bg-white border-b border-gray-100"
@@ -791,7 +787,6 @@ export default function EldecoLandingPage() {
             </div>
           </section>
 
-          {/* Master Plan */}
           <section
             id="floorplan"
             className="p-6 lg:p-8 bg-white border-b border-gray-100"
@@ -849,7 +844,6 @@ export default function EldecoLandingPage() {
             </div>
           </section>
 
-          {/* Amenities Section (Lightbox Integrated) */}
           <section
             id="amenities"
             className="p-6 lg:p-8 bg-white border-b border-gray-100 relative overflow-hidden"
@@ -881,7 +875,7 @@ export default function EldecoLandingPage() {
                 {amenitiesList.map((amenity, i) => (
                   <div
                     key={i}
-                    className="relative h-48 lg:h-56 min-w-[260px] lg:min-w-[320px] rounded-lg overflow-hidden group/item cursor-pointer snap-start"
+                    className="relative h-48 lg:h-56 min-w-[260px] lg:minw-[320px] rounded-lg overflow-hidden group/item cursor-pointer snap-start"
                     onClick={() =>
                       openLightbox(
                         amenitiesList.map((a) => a.img),
@@ -911,7 +905,6 @@ export default function EldecoLandingPage() {
             </div>
           </section>
 
-          {/* Gallery Section (Lightbox Integrated) */}
           <section
             id="gallery"
             className="p-6 lg:p-10 bg-white border-b border-gray-100"
@@ -1048,7 +1041,7 @@ export default function EldecoLandingPage() {
               Real Estate development in North India since. So far, they have
               delivered 200 outstanding projects spanning integrated townships,
               high-rise condominiums, commercial & industrial estates, and
-              malls.
+              mals.
             </p>
 
             <h4 className="font-bold text-gray-900 mb-2">RERA Information</h4>
@@ -1088,12 +1081,8 @@ export default function EldecoLandingPage() {
           </footer>
         </div>
 
-        {/* ========================================== */}
-        {/* RIGHT COLUMN (WHERE THE FORM NOW LIVES!) */}
-        {/* ========================================== */}
         <div className="hidden lg:block lg:w-[28%] bg-gray-50 relative">
           <div className="sticky top-16 p-6 pt-8 bg-white h-[calc(100vh-64px)] overflow-y-auto border-l border-gray-200">
-            
             <ContactForm />
 
             <div className="mt-8 border-t border-gray-100 pt-8">
@@ -1120,12 +1109,10 @@ export default function EldecoLandingPage() {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
 
-      {/* --- FORM MODAL RENDER --- */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity">
           <div className="bg-white rounded-xl flex flex-col overflow-hidden relative shadow-2xl w-full max-w-[700px] animate-in fade-in zoom-in duration-300">
@@ -1210,14 +1197,13 @@ export default function EldecoLandingPage() {
                   Register Here And Avail The{" "}
                   <span className="text-red-500">Best Offers!!</span>
                 </h3>
-                {/* Notice we attached the same handleLeadSubmit here! */}
                 <form
                   className="space-y-4 lg:space-y-6"
                   onSubmit={handleLeadSubmit}
                 >
                   <input
                     type="text"
-                    name="name" 
+                    name="name"
                     placeholder="Name"
                     className="w-full px-1 py-2 border-b border-gray-300 text-gray-700 focus:outline-none focus:border-teal-700 text-sm"
                     required
@@ -1253,9 +1239,9 @@ export default function EldecoLandingPage() {
               </div>
             </div>
             <a href="tel:+919205303155">
-            <div className="w-full bg-teal-700 py-3 flex items-center justify-center text-white font-bold tracking-wide text-sm lg:text-base">
-              <Phone size={16} className="mr-2" /> +919205303155
-            </div>
+              <div className="w-full bg-teal-700 py-3 flex items-center justify-center text-white font-bold tracking-wide text-sm lg:text-base">
+                <Phone size={16} className="mr-2" /> +919205303155
+              </div>
             </a>
           </div>
         </div>
