@@ -1,7 +1,26 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import { CheckCircle, Phone } from "lucide-react";
 
 export default function ThankYouPage() {
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "Form_Submit", {
+        event_category: "Lead",
+        event_label: "Thank You Page",
+        value: 1,
+      });
+
+      // ✅ If using Google Ads Conversion Tracking, use this instead:
+      // window.gtag("event", "conversion", {
+      //   send_to: "AW-XXXXXXXXX/XXXXXXXXXX",
+      // });
+    }
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-6 py-20">
       <div className="bg-white p-10 md:p-14 rounded-xl shadow-lg border border-gray-100 text-center max-w-lg mx-auto flex flex-col items-center animate-in fade-in zoom-in duration-500">
@@ -23,7 +42,7 @@ export default function ThankYouPage() {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center items-center">
 
-          {/* Highlighted Call Button */}
+          {/* Call Button */}
           <a href="tel:+919205303155">
             <button className="flex items-center justify-center px-6 py-3 rounded-lg bg-orange-500 text-white font-bold shadow-lg hover:bg-orange-600 transition-all animate-pulse">
               <Phone size={18} className="mr-2" />
@@ -31,7 +50,7 @@ export default function ThankYouPage() {
             </button>
           </a>
 
-          {/* Smaller Back Button */}
+          {/* Back Button */}
           <Link href="/">
             <button className="px-5 py-2.5 rounded bg-teal-700 text-white text-sm font-semibold hover:bg-teal-800 transition shadow">
               Back to Home

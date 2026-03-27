@@ -133,9 +133,9 @@ function Navbar({ openModal }: { openModal: () => void }) {
         <div className="flex items-center h-full w-full lg:w-auto justify-between lg:justify-start px-4 lg:px-0">
           <div className="lg:px-6 lg:mr-2 flex items-center cursor-pointer h-full lg:border-r border-gray-200 min-w-[200px]">
             <img
-              src="/logo.svg"
+              src="/logo.png"
               alt="Eldeco 7 Peaks"
-              className="h-10 lg:h-12 w-auto object-contain"
+              className="h-10 lg:h-12 w-auto object-cover"
               onError={(e) => {
                 e.currentTarget.style.display = "none";
                 e.currentTarget.nextElementSibling?.classList.remove("hidden");
@@ -1127,7 +1127,7 @@ export default function EldecoLandingPage() {
               <div className="w-full md:w-[35%] bg-gray-50 p-6 lg:p-8 flex flex-col items-center border-b md:border-b-0 md:border-r border-gray-200">
                 <div className="flex items-center mb-6 lg:mb-8">
                   <Image
-                    src="/logo.svg"
+                    src="/logo.png"
                     alt="7 Peaks Residences"
                     width={120}
                     height={40}
