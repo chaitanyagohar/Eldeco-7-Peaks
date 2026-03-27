@@ -29,7 +29,7 @@ export default function RootLayout({
         {/* ========================================= */}
         {/* Google Tag Manager (HEAD)                 */}
         {/* ========================================= */}
-        <Script
+        {/* <Script
           id="google-tag-manager"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
@@ -41,14 +41,14 @@ export default function RootLayout({
               })(window,document,'script','dataLayer','GTM-W6RDWJRL');
             `,
           }}
-        />
+        /> */}
 
         {/* ========================================= */}
         {/* Google tag (gtag.js) for Google Ads       */}
         {/* ========================================= */}
         <Script
           strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=AW-18001039542`}
+          src={`hhttps://www.googletagmanager.com/gtag/js?id=G-T0P7DQ1JE5`}
         />
         <Script
           id="google-gtag"
@@ -58,7 +58,7 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'AW-18001039542');
+              gtag('config', 'G-T0P7DQ1JE5');
             `,
           }}
         />
@@ -69,14 +69,14 @@ export default function RootLayout({
         {/* ========================================= */}
         {/* Google Tag Manager (noscript) (BODY)      */}
         {/* ========================================= */}
-        <noscript>
+        {/* <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-W6RDWJRL"
             height="0"
             width="0"
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
-        </noscript>
+        </noscript> */}
 
         {children}
       </body>
