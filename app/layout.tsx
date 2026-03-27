@@ -48,7 +48,7 @@ export default function RootLayout({
         {/* ========================================= */}
         <Script
           strategy="afterInteractive"
-          src={`hhttps://www.googletagmanager.com/gtag/js?id=G-T0P7DQ1JE5`}
+          src={`https://www.googletagmanager.com/gtag/js?id=G-T0P7DQ1JE5`}
         />
         <Script
           id="google-gtag"
